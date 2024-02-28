@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Project To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff; /* Blue heading color */
+            margin-bottom: 20px;
+        }
+        .task {
+            background-color: #f1f1f1; /* Light gray task background */
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .task-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .task-header span {
+            font-weight: bold;
+            color: #343a40; /* Dark text color */
+            flex-basis: calc(25% - 10px);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .input-container {
+            flex-basis: calc(25% - 10px);
+            margin-bottom: 10px;
+        }
+        .input-container input[type="text"],
+        .input-container select,
+        .input-container textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ced4da; /* Light gray border */
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        select {
+            width: 100%;
+        }
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue button background */
+            color: #fff; /* White button text color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .low-priority {
+            background-color: #d1ecf1; /* Light blue */
+        }
+        .medium-priority {
+            background-color: #fff3cd; /* Light yellow */
+        }
+        .high-priority {
+            background-color: #f8d7da; /* Light red */
+        }
+        .pending-status {
+            color: #ffc107; /* Yellow */
+        }
+        .in-progress-status {
+            color: #17a2b8; /* Cyan */
+        }
+        .completed-status {
+            color: #28a745; /* Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Website Project To-Do List</h1>
+        <div class="task">
+            <div class="task-header">
+                <div class="input-container">
+                    <span style="color: #6c757d;">Task:</span>
+                    <input type="text" placeholder="Enter task...">
+                </div>
+                <div class="input-container">
+                    <span style="color: #6c757d;">Deadline:</span>
+                    <input type="date">
+                </div>
+                <div class="input-container">
+                    <span style="color: #6c757d;">Priority:</span>
+                    <select>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="input-container">
+                    <span style="color: #6c757d;">Status:</span>
+                    <select>
+                        <option value="pending">Pending</option>
+                        <option value="inProgress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="task-content">
+                <textarea placeholder="Notes..."></textarea>
+            </div>
+        </div>
+        <div id="taskList"></div>
+        <button class="btn" onclick="addTask()">Add Task</button>
+    </div>
+
+    <script>
+        function addTask() {
+            var taskList = document.getElementById("taskList");
+
+            var taskDiv = document.createElement("div");
+            taskDiv.classList.add("task");
+
+            var taskHeader = document.createElement("div");
+            taskHeader.classList.add("task-header");
+
+            var inputContainers = [];
+
+            var taskLabels = ["Task:", "Deadline:", "Priority:", "Status:"];
+            taskLabels.forEach(function(labelText, index) {
+                var inputContainer = document.createElement("div");
+                inputContainer.classList.add("input-container");
+                
+                var labelSpan = document.createElement("span");
+                labelSpan.textContent = labelText;
+                labelSpan.style.color = "#6c757d"; /* Dark gray label text color */
+
+                var inputElement;
+                if (index === 0) {
+                    inputElement = document.createElement("input");
+                    inputElement.setAttribute("type", "text");
+                    inputElement.setAttribute("placeholder", "Enter task...");
+                } else if (index === 1) {
+                    inputElement = document.createElement("input");
+                    inputElement.setAttribute("type", "date");
+                } else if (index === 2) {
+                    inputElement = document.createElement("select");
+                    var priorityOptions = ["low", "medium", "high"];
+                    priorityOptions.forEach(function(optionValue) {
+                        var option = document.createElement("option");
+                        option.setAttribute("value", optionValue);
+                        option.textContent = optionValue.charAt(0).toUpperCase() + optionValue.slice(1);
+                        inputElement.appendChild(option);
+                    });
+                } else if (index === 3) {
+                    inputElement = document.createElement("select");
+                    var statusOptions = ["pending", "inProgress", "completed"];
+                    statusOptions.forEach(function(optionValue) {
+                        var option = document.createElement("option");
+                        option.setAttribute("value", optionValue);
+                        option.textContent = optionValue.charAt(0).toUpperCase() + optionValue.slice(1);
+                        inputElement.appendChild(option);
+                    });
+                }
+
+                inputContainer.appendChild(labelSpan);
+                inputContainer.appendChild(inputElement);
+
+                inputContainers.push(inputContainer);
+            });
+
+            inputContainers.forEach(function(container) {
+                taskHeader.appendChild(container);
+            });
+
+            taskDiv.appendChild(taskHeader);
+
+            var hr = document.createElement("hr");
+            taskDiv.appendChild(hr);
+
+            var taskContent = document.createElement("div");
+            taskContent.classList.add("task-content");
+
+            var textAreaNotes = document.createElement("textarea");
+            textAreaNotes.setAttribute("placeholder", "Notes...");
+            taskContent.appendChild(textAreaNotes);
+
+            taskDiv.appendChild(taskContent);
+
+            taskList.appendChild(taskDiv);
+        }
+    </script>
+</body>
+</html>
